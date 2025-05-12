@@ -16,7 +16,7 @@ cache = Cache(app, config={"CACHE_TYPE": "simple"}) #configurando cache da aplic
 
 
 @app.route("/")
-@cache.cached(timeout=10) #guarda em cache durante 10 segundos
+@cache.cached(timeout=60) #guarda em cache durante 10 segundos
 def store():
     data_web_scrapping = WebScrapping().get_content_page()
     return str(data_web_scrapping)
