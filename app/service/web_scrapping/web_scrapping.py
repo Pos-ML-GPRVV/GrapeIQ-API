@@ -32,7 +32,8 @@ class WebScrapping:
         data: list = []
         
         for end_point in end_points:
-            response =  WebScrappingRequest(BASE_URL).do(f"?opcao={end_point}&ano={ano}")
+            response =  WebScrappingRequest(BASE_URL).do(f"?opcao={end_point}&ano={year}")
+            print(response)
             html_content = response
             soup = BeautifulSoup(html_content, "html.parser")
             buttons = soup.find_all("button", {"class": "btn_opt"})

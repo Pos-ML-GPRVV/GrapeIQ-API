@@ -1,7 +1,6 @@
 from flask import Flask, jsonify, request
 from flask_httpauth import HTTPBasicAuth
 from flasgger import Swagger 
-from flask_caching import Cache 
 from service.web_scrapping.web_scrapping import WebScrapping
 from datetime import datetime
 from utils.env import validate_env_variables
@@ -27,13 +26,10 @@ swagger = Swagger(app, template=SWAGGER_TEMPLATE)
 
 auth = HTTPBasicAuth()
 
-cache = Cache(app, config={"CACHE_TYPE": "simple"})
-
 def get_current_year():
     return str(datetime.now().year)
 
 @app.route("/")
-@cache.cached(timeout=60)
 def get_raw_data():
     """
     Returns raw data obtained through web scraping
@@ -53,13 +49,12 @@ def get_raw_data():
         200:
             description: Data successfully retrieved
     """
-    year = request.args.get("year", default=get_current_year())
+    year = request.args.get("year", default=2023)
     data_web_scrapping = WebScrapping().get_content_page(year)
     return jsonify({"data": data_web_scrapping, "year": year})
 
 
 @app.route("/json")
-@cache.cached(timeout=60)
 def get_structured_data():
     """
     Returns processed data in a structured JSON format
@@ -97,20 +92,22 @@ def get_structured_data():
             schema:
                 $ref: '#/components/schemas/HTTPError'
     """
-    year = request.args.get("year", type=int, default=get_current_year())
     try:
+        year = request.args.get("year", type=int, default=2023)
         data_web_scrapping = WebScrapping().get_content_page_json(year)
-        return jsonify({
+        response = {
             "success": True,
             "year": year,
             "data": data_web_scrapping
-        })
+        }
+        return jsonify(response)
     except Exception as e:
-        return jsonify({
+        error_response = {
             "success": False,
             "year": year,
             "error": str(e)
-        }), 500
+        }
+        return jsonify(error_response), 500
 
 
 if __name__ == "__main__":
