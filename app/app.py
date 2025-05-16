@@ -2,13 +2,14 @@ from flask import Flask, jsonify, request
 from flask_httpauth import HTTPBasicAuth
 from flasgger import Swagger 
 from flask_caching import Cache 
-
+from utils.api_doc_info import SWAGGER_TEMPLATE
+from utils.env import validate_env_variables
 
 app = Flask(__name__)
 
 app.config["SWAGGER"] = {"title": "Web Scrapping API", "uiversion": 3}
 
-swagger = Swagger(app)
+swagger = Swagger(app, template=SWAGGER_TEMPLATE)
 
 auth = HTTPBasicAuth()
 
@@ -36,4 +37,5 @@ def store_json():
 
 
 if __name__ == "__main__":
+    validate_env_variables()
     app.run(debug=True)
