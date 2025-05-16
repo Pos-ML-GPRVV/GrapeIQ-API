@@ -11,7 +11,7 @@ def salvar_dataframe(df: pd.DataFrame, tipo: str, ano: int):
 
             cursor.execute(
                 """
-                SELECT 1 FROM dados_embrapa
+                SELECT 1 FROM embrapa
                 WHERE tipo = %s AND ano = %s AND item = %s AND subitem = %s
                 """,
                 (tipo, ano, row.get("Item"), row.get("SubItem"))
@@ -21,7 +21,7 @@ def salvar_dataframe(df: pd.DataFrame, tipo: str, ano: int):
 
             cursor.execute(
                 """
-                INSERT INTO dados_embrapa (tipo, ano, item, subitem, quantidade)
+                INSERT INTO embrapa (tipo, ano, item, subitem, quantidade)
                 VALUES (%s, %s, %s, %s, %s)
                 """,
                 (
@@ -38,7 +38,7 @@ def salvar_dataframe(df: pd.DataFrame, tipo: str, ano: int):
 
             cursor.execute(
                 """
-                SELECT 1 FROM dados_embrapa
+                SELECT 1 FROM embrapa
                 WHERE tipo = %s AND ano = %s AND pais = %s
                 """,
                 (tipo, ano, pais)
@@ -48,7 +48,7 @@ def salvar_dataframe(df: pd.DataFrame, tipo: str, ano: int):
 
             cursor.execute(
                 """
-                INSERT INTO dados_embrapa (tipo, ano, pais, quantidade, valor)
+                INSERT INTO embrapa (tipo, ano, pais, quantidade, valor)
                 VALUES (%s, %s, %s, %s, %s)
                 """,
                 (
