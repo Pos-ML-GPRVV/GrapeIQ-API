@@ -29,7 +29,7 @@ auth = HTTPBasicAuth()
 def get_current_year():
     return str(datetime.now().year)
 
-@app.route("/")
+@app.route("/extractor")
 def get_raw_data():
     """
     Returns raw data obtained through web scraping
@@ -50,11 +50,13 @@ def get_raw_data():
             description: Data successfully retrieved
     """
     year = request.args.get("year", default=2023)
+    if int(year) > 2023:
+        return jsonify({"error": "Data available until 2023"}), 400 
     data_web_scrapping = WebScrapping().get_content_page(year)
-    return jsonify({"data": data_web_scrapping, "year": year})
+    return jsonify({"year": year, "data": data_web_scrapping})
 
 
-@app.route("/json")
+@app.route("/download")
 def get_structured_data():
     """
     Returns processed data in a structured JSON format
@@ -92,22 +94,7 @@ def get_structured_data():
             schema:
                 $ref: '#/components/schemas/HTTPError'
     """
-    try:
-        year = request.args.get("year", type=int, default=2023)
-        data_web_scrapping = WebScrapping().get_content_page_json(year)
-        response = {
-            "success": True,
-            "year": year,
-            "data": data_web_scrapping
-        }
-        return jsonify(response)
-    except Exception as e:
-        error_response = {
-            "success": False,
-            "year": year,
-            "error": str(e)
-        }
-        return jsonify(error_response), 500
+    pass #TODO Criar rota de download
 
 
 if __name__ == "__main__":

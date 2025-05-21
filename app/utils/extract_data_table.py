@@ -8,6 +8,8 @@ class ExtractDataTable:
     
     def do(self) -> DataFrame:
         table = self.data.find("table", {"class": "tb_base tb_dados"})
+        if table is None:
+            return DataFrame()
         rows = table.find_all("tr")
         data_df: list = []
         current_item = None
