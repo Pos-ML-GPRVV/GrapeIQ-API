@@ -1,3 +1,4 @@
+import os
 from flask import Flask, jsonify, request
 from flask_httpauth import HTTPBasicAuth
 from flasgger import Swagger 
@@ -5,6 +6,7 @@ from service.web_scrapping.web_scrapping import WebScrapping
 from datetime import datetime
 from utils.env import validate_env_variables
 from utils.api_doc_info import SWAGGER_TEMPLATE
+from functools import wraps
 app = Flask(__name__)
 
 app.config["SWAGGER"] = {
@@ -22,6 +24,8 @@ app.config["SWAGGER"] = {
     "info": SWAGGER_TEMPLATE["info"]
 }
 
+API_KEY = os.getenv("API_KEY")
+
 swagger = Swagger(app, template=SWAGGER_TEMPLATE)
 
 auth = HTTPBasicAuth()
@@ -29,7 +33,18 @@ auth = HTTPBasicAuth()
 def get_current_year():
     return str(datetime.now().year)
 
+def require_api_key(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        api_key = request.headers.get("x-api-key")
+        if api_key == API_KEY:
+            return func(*args, **kwargs)
+        else:
+            return jsonify({"message": "Unauthorized"}), 401
+    return wrapper
+
 @app.route("/extractor")
+@require_api_key
 def get_raw_data():
     """
     Returns raw data obtained through web scraping
@@ -94,8 +109,6 @@ def get_structured_data():
             schema:
                 $ref: '#/components/schemas/HTTPError'
     """
-    pass #TODO Criar rota de download
-
 
 if __name__ == "__main__":
     validate_env_variables()

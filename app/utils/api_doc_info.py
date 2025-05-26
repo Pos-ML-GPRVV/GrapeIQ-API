@@ -1,6 +1,6 @@
 SWAGGER_TEMPLATE = {
     "info": {
-        "title": "GrapeIQ API",
+        "title": "Grapi",
         "description": """
 # About the API
 API developed to collect and provide data about grape and grape products commercialization in Brazil.
@@ -34,12 +34,12 @@ The data is obtained through web scraping from Embrapa's VitiBrasil portal.
 - Standardized JSON format
 
 ## Repository
-For more information, visit our [GitHub Repository](https://github.com/Pos-ML-GPRVV/GrapeIQ-API)
+For more information, visit our [GitHub Repository](https://github.com/Pos-ML-GPRVV/Grapi)
 """,
         "version": "1.0.0",
         "contact": {
             "email": "your.email@example.com",
-            "url": "https://github.com/your-org/grapeiq-api"
+            "url": "https://github.com/your-org/grapi"
         }
     },
     "components": {
