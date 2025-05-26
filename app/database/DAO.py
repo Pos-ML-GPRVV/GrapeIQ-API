@@ -32,3 +32,27 @@ class Insert:
         conn.commit()
         cursor.close()
         conn.close()
+class Select:
+    def __init__(self):
+        pass
+    def fetch_data_by_year(year: int):
+        conn = get_connection()
+        cursor = conn.cursor()
+        try:
+            print(f"Searching for data from year: {year}")
+            cursor.execute(
+                f"""
+                SELECT data_json
+                FROM embrapa
+                WHERE year = {year}
+                """
+            )
+            result = cursor.fetchall()
+            print(f"Resources found: {len(result) if result else 0}")
+            return result
+        except Exception as e:
+            print(f"Error searching for data: {str(e)}")
+            return None
+        finally:
+            cursor.close()
+            conn.close()
