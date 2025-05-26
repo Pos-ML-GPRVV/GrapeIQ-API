@@ -6,7 +6,12 @@ def dict_to_csv(data: dict, path: str = "./app/data") -> list:
     os.makedirs(path, exist_ok=True)
 
     csv_paths = []
-    for section, content in data.items():
+    if isinstance(data, list):
+        data_dict = data[0][0]
+    else:
+        data_dict = data
+        
+    for section, content in data_dict.items():
         for pad in content:
             for title, register in pad.items():
                 file_name = f"{section}_{title}".replace('[', '').replace(']', '').replace(' ', '_')
