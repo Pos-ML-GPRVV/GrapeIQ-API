@@ -5,6 +5,9 @@ from service.web_scrapping.web_scrapping import WebScrapping
 from datetime import datetime
 from utils.env import validate_env_variables
 from utils.api_doc_info import SWAGGER_TEMPLATE
+from utils.response_builder import build_json_response, build_error_response
+
+
 app = Flask(__name__)
 
 app.config["SWAGGER"] = {
@@ -51,7 +54,7 @@ def get_raw_data():
     """
     year = request.args.get("year", default=2023)
     if int(year) > 2023:
-        return jsonify({"error": "Data available until 2023"}), 400 
+        return build_error_response() 
     data_web_scrapping = WebScrapping().get_content_page(year)
     return jsonify({"year": year, "data": data_web_scrapping})
 
@@ -99,4 +102,4 @@ def get_structured_data():
 
 if __name__ == "__main__":
     validate_env_variables()
-    app.run(debug=True, host='0.0.0.0', port=5432)
+    app.run(debug=True)
