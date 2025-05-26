@@ -1,10 +1,13 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, send_file
 from flask_httpauth import HTTPBasicAuth
 from flasgger import Swagger 
 from service.web_scrapping.web_scrapping import WebScrapping
 from datetime import datetime
 from utils.env import validate_env_variables
 from utils.api_doc_info import SWAGGER_TEMPLATE
+from utils.dict_to_csv import dict_to_csv, zip_files
+from pathlib import Path
+
 app = Flask(__name__)
 
 app.config["SWAGGER"] = {
@@ -94,7 +97,15 @@ def get_structured_data():
             schema:
                 $ref: '#/components/schemas/HTTPError'
     """
-    pass #TODO Criar rota de download
+    year = request.args.get("year", default=2023)
+    if int(year) > 2023:
+        return jsonify({"error": "Data available until 2023"}), 400 
+
+    data_web_scrapping = WebScrapping().get_content_page(year)
+    path_files = dict_to_csv(data_web_scrapping)
+    zip_path = zip_files(path_files, year)
+    path_resolve = Path(zip_path).resolve()
+    return send_file(path_resolve, as_attachment=True)
 
 
 if __name__ == "__main__":
