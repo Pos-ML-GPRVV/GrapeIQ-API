@@ -13,4 +13,4 @@ class WebScrappingRequest:
             response.raise_for_status()
             return response.text
         except RequestException as e:
-            raise RuntimeError(f"Erro ao buscar URL: {url}") from e
+            raise RuntimeError(f"Error searching for url: {url}") from e

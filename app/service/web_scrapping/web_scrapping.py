@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup 
 from web.web_scrapping_request import WebScrappingRequest
 from utils.extract_data_table import ExtractDataTable
-from database.DAO import Insert
+from database.DAO import Insert, Select
 
 
 BASE_URL = "http://vitibrasil.cnpuv.embrapa.br/index.php"
@@ -13,7 +13,10 @@ class WebScrapping:
         pass
 
     def __end_point_buttons(self):
-        response = self.web_scrapping_request.do('/')
+        try:
+            response = self.web_scrapping_request.do('/')
+        except:
+            return False 
         end_points: list = []
         html_content = response
         soup = BeautifulSoup(html_content, "html.parser")
@@ -28,6 +31,9 @@ class WebScrapping:
     def get_content_page(self, year: int):
 
         end_points = self.__end_point_buttons()
+        if not end_points:
+            data_saved_database = Select.fetch_data_by_year(year)
+            return data_saved_database
         data = {}
         
         for end_point in end_points:
@@ -64,7 +70,6 @@ class WebScrapping:
                         title_table: table.to_dict(orient="records")
                         }
                     )
-                    
         Insert.save_json(data, year)
         
         return data
