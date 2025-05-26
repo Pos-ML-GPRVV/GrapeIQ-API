@@ -20,7 +20,7 @@ app.config["SWAGGER"] = {
     "static_url_path": "/flasgger_static",
     "swagger_ui": True,
     "specs_route": "/apidocs/",
-    "title": "GrapeIQ API",
+    "title": "Grapi",
     "uiversion": 3,
     "info": SWAGGER_TEMPLATE["info"]
 }
