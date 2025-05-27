@@ -30,8 +30,7 @@ swagger = Swagger(app, template=SWAGGER_TEMPLATE)
 auth = HTTPBasicAuth()
 
 def get_current_year():
-    current_year = datetime.now().year
-    return build_json_response("SUCCESS", data=[current_year])
+    return str(datetime.now().year)
 
 
 @app.route("/extractor")
@@ -104,4 +103,4 @@ def get_structured_data():
 
 if __name__ == "__main__":
     validate_env_variables()
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0', port=5432)
