@@ -5,7 +5,7 @@ from service.web_scrapping.web_scrapping import WebScrapping
 from datetime import datetime
 from utils.env import validate_env_variables
 from utils.api_doc_info import SWAGGER_TEMPLATE
-from utils.response_builder import build_json_response, build_error_response
+from utils.response_builder import build_json_response, build_error_response, MESSAGES
 
 
 app = Flask(__name__)
@@ -30,7 +30,9 @@ swagger = Swagger(app, template=SWAGGER_TEMPLATE)
 auth = HTTPBasicAuth()
 
 def get_current_year():
-    return str(datetime.now().year)
+    current_year = datetime.now().year
+    return build_json_response("SUCCESS", data=[current_year])
+
 
 @app.route("/extractor")
 def get_raw_data():
@@ -54,9 +56,9 @@ def get_raw_data():
     """
     year = request.args.get("year", default=2023)
     if int(year) > 2023:
-        return build_error_response() 
+        return build_error_response("DATA_LIMIT_YEAR") 
     data_web_scrapping = WebScrapping().get_content_page(year)
-    return jsonify({"year": year, "data": data_web_scrapping})
+    return build_json_response("SUCCESS", year=year, data=data_web_scrapping)
 
 
 @app.route("/download")
