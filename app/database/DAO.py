@@ -56,3 +56,23 @@ class Select:
         finally:
             cursor.close()
             conn.close()
+            
+    def fetch_due_date(year: int):
+        conn = get_connection()
+        cursor = conn.cursor()
+        try:
+            cursor.execute(
+                f"""
+                SELECT due_date
+                FROM embrapa
+                WHERE year = {year}
+                """
+            )
+            result = cursor.fetchall()
+            return result
+        except Exception as e:
+            print(f"Error searching for data: {str(e)}")
+            return None
+        finally:
+            cursor.close()
+            conn.close()

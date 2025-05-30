@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup
 from web.web_scrapping_request import WebScrappingRequest
 from utils.extract_data_table import ExtractDataTable
 from database.DAO import Insert, Select
+from datetime import date
 
 
 BASE_URL = "http://vitibrasil.cnpuv.embrapa.br/index.php"
@@ -28,7 +29,7 @@ class WebScrapping:
 
         return end_points              
 
-    def get_content_page(self, year: int):
+    def __get_content_page(self, year: int):
 
         end_points = self.__end_point_buttons()
         if not end_points:
@@ -74,3 +75,12 @@ class WebScrapping:
         
         return data
     
+    def fetch_data(self, year: int):
+        due_date = Select.fetch_due_date(year)[0][0]
+        current_date = date.today()
+        if current_date > due_date:
+            print("Fetching data from the website")
+            return self.__get_content_page(year)
+        else:
+            print("Fetching data from the database")
+            return Select.fetch_data_by_year(year)
