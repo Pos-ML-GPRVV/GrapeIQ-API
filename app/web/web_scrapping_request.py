@@ -1,5 +1,5 @@
 from requests import get, RequestException
-from file.manager_files import ManagerFiles
+from app.file.manager_files import ManagerFiles
 import requests
 
 class WebScrappingRequest:

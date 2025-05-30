@@ -1,4 +1,4 @@
-from database.connection import get_connection
+from app.database.connection import get_connection
 import json
 from datetime import datetime, timedelta
 
