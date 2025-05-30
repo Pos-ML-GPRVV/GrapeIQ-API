@@ -4,12 +4,12 @@ from flask import Flask, jsonify, request
 from flask import Flask, jsonify, request, send_file
 from flask_httpauth import HTTPBasicAuth
 from flasgger import Swagger 
-from service.web_scrapping.web_scrapping import WebScrapping
+from .service.web_scrapping.web_scrapping import WebScrapping
 from datetime import datetime
-from utils.env import validate_env_variables
-from utils.api_doc_info import SWAGGER_TEMPLATE
-from functools import wraps
-from utils.dict_to_csv import dict_to_csv, zip_files
+from .utils.env import validate_env_variables
+from .utils.api_doc_info import SWAGGER_TEMPLATE
+from .functools import wraps
+from .utils.dict_to_csv import dict_to_csv, zip_files
 from pathlib import Path
 
 app = Flask(__name__)
