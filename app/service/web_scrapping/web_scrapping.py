@@ -29,7 +29,7 @@ class WebScrapping:
 
         return end_points              
 
-    def __get_content_page(self, year: int):
+    def get_content_page(self, year: int):
 
         end_points = self.__end_point_buttons()
         if not end_points:
@@ -71,16 +71,11 @@ class WebScrapping:
                         title_table: table.to_dict(orient="records")
                         }
                     )
-        Insert.save_json(data, year)
         
-        return data
-    
-    def fetch_data(self, year: int):
         due_date = Select.fetch_due_date(year)[0][0]
         current_date = date.today()
         if current_date > due_date:
-            print("Fetching data from the website")
-            return self.__get_content_page(year)
-        else:
-            print("Fetching data from the database")
-            return Select.fetch_data_by_year(year)
+            print(f"Updating stored data from the year {year}")
+            Insert.save_json(data, year)
+        
+        return data

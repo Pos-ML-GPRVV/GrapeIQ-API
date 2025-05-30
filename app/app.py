@@ -72,7 +72,7 @@ def get_raw_data():
     year = request.args.get("year", default=2023)
     if int(year) > 2023:
         return jsonify({"error": "Data available until 2023"}), 400 
-    data_web_scrapping = WebScrapping().fetch_data(year)
+    data_web_scrapping = WebScrapping().get_content_page(year)
     return jsonify({"year": year, "data": data_web_scrapping})
 
 
