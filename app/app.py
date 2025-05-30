@@ -10,6 +10,8 @@ from app.utils.api_doc_info import SWAGGER_TEMPLATE
 from functools import wraps
 from app.utils.dict_to_csv import dict_to_csv, zip_files
 from pathlib import Path
+from flask_cors import CORS, cross_origin
+
 
 app = Flask(__name__)
 
@@ -34,6 +36,8 @@ swagger = Swagger(app, template=SWAGGER_TEMPLATE)
 
 auth = HTTPBasicAuth()
 
+CORS(app, resources={r"/*": {"origins": ["https://tech-challange-front.onrender.com", "http://localhost:3000"]}})
+
 def get_current_year():
     return str(datetime.now().year)
 
@@ -48,6 +52,7 @@ def require_api_key(func):
     return wrapper
 
 @app.route("/extractor")
+@cross_origin()
 @require_api_key
 def get_raw_data():
     """
@@ -76,6 +81,8 @@ def get_raw_data():
 
 
 @app.route("/download")
+@cross_origin()
+@require_api_key
 def get_structured_data():
     """
     Returns processed data in a structured JSON format
