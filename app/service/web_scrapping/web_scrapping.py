@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup
 from web.web_scrapping_request import WebScrappingRequest
 from utils.extract_data_table import ExtractDataTable
 from database.DAO import Insert, Select
+from datetime import date
 
 
 BASE_URL = "http://vitibrasil.cnpuv.embrapa.br/index.php"
@@ -70,7 +71,11 @@ class WebScrapping:
                         title_table: table.to_dict(orient="records")
                         }
                     )
-        Insert.save_json(data, year)
+        
+        due_date = Select.fetch_due_date(year)[0][0]
+        current_date = date.today()
+        if current_date > due_date:
+            print(f"Updating stored data from the year {year}")
+            Insert.save_json(data, year)
         
         return data
-    
