@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup 
-from web.web_scrapping_request import WebScrappingRequest
-from utils.extract_data_table import ExtractDataTable
-from database.DAO import Insert, Select
+from app.web.web_scrapping_request import WebScrappingRequest
+from app.utils.extract_data_table import ExtractDataTable
+from app.database.DAO import Insert, Select
 from datetime import date
 
 
