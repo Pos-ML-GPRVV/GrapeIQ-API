@@ -1,147 +1,140 @@
-# API de Extração de Dados de Comercialização de Uvas
+# Grapi - Grape Data Extraction API 
 
-Este projeto consiste em uma API REST desenvolvida em Python/Flask para coletar, processar e disponibilizar dados sobre a comercialização de uvas no Brasil. A aplicação realiza web scraping diretamente do site da **Embrapa**, estruturando e armazenando os dados em um banco de dados PostgreSQL hospedado na plataforma **Neon**.
+![Logo](https://raw.githubusercontent.com/Pos-ML-GPRVV/Grapi/ca645c5663cbee149e6b27059cf53cb0550746d3/app/static/Grapi-logo.png) This API provides endpoints for extracting and processing grape commercialization data from http://vitibrasil.cnpuv.embrapa.br/index.php, using web scraping to collect up-to-date information.
 
----
+## 🚀 Features
 
-## 🗂️ Estrutura do Projeto
+- Raw data extraction about grape commercialization
+- Data processing and structuring
+- Download data in compressed CSV format
+- Interactive documentation with Swagger
+- API Key authentication
+- CORS support for frontend integration
 
-```
-Grapi/
-├── app/
-│   ├── __init__.py
-│   ├── routes/
-│   │   ├── __init__.py
-│   │   ├── auth_routes.py
-│   │   ├── crud_routes.py
-│   │   └── scrape_routes.py
-│   ├── services/
-│   │   ├── __init__.py
-│   │   └── scraping_service.py
-│   ├── utils/
-│   │   ├── __init__.py
-│   │   └── auth.py
-│   └── config.py
-├── requirements.txt
-├── Dockerfile
-├── README.md
-└── run.py
-```
+## 🛠️ Technologies Used
 
-- **app/**: Diretório principal do aplicativo.
-  - **routes/**: Contém as rotas organizadas por funcionalidades.
-  - **services/**: Serviços para lógica de negócios, como scraping.
-  - **utils/**: Utilitários, como autenticação.
-  - **config.py**: Configurações da aplicação Flask.
-- **run.py**: Ponto de entrada para iniciar o aplicativo.
-- **requirements.txt**: Lista de dependências do projeto.
-- **Dockerfile**: Configurações para Docker.
-- **README.md**: Documentação do projeto.
+- Python 3.x
+- Flask
+- BeautifulSoup4
+- Pandas
+- Flask-HTTPAuth
+- Flasgger (Swagger)
+- Flask-CORS
+- Gunicorn
 
----
+## 📋 Prerequisites
 
-## 🚀 Funcionalidades
+- Python 3.x
+- pip (Python package manager)
+- Environment variables configured (see Configuration section)
 
-- Web scraping automatizado dos dados de comercialização de uvas do site da Embrapa
-- API RESTful com documentação interativa via Swagger
-- Autenticação básica HTTP
-- Cache de dados para otimização de performance
-- Persistência dos dados em banco PostgreSQL (Neon)
-- Processamento e estruturação dos dados para consumo
+## 🔧 Installation
 
----
-
-## 📋 Pré-requisitos
-
-- Python 3.8+
-- Conta no Neon (PostgreSQL gerenciado na nuvem)
-- pip (gerenciador de pacotes Python)
-
----
-
-## 🔧 Instalação
-
-Clone o repositório:
-```sh
-git clone [https://github.com/Pos-ML-GPRVV/Grapi.git]
-cd [https://github.com/Pos-ML-GPRVV/Grapi.git]
+1. Clone the repository:
+```bash
+git clone https://github.com/Pos-ML-GPRVV/Grapi
 ```
 
-Crie e ative um ambiente virtual:
-```sh
+2. Create and activate a virtual environment:
+```bash
 python -m venv venv
 source venv/bin/activate  # Linux/Mac
-# ou
-.\venv\Scripts\activate   # Windows
+.\venv\Scripts\activate  # Windows
 ```
 
-Instale as dependências:
-```sh
+3. Install dependencies:
+```bash
 pip install -r requirements.txt
 ```
 
-Configure as variáveis de ambiente:
+## ⚙️ Configuration
 
-Copie o arquivo `.env.example` para `.env` e ajuste os valores conforme necessário:
+Create a `.env` file in the project root with the following variables:
+
 ```env
-DB_HOST='ep-empty-thunder-ac035frq-pooler.sa-east-1.aws.neon.tech'
-DB_NAME='neondb'
-DB_USER='neondb_owner'
-DB_PASSWORD='npg_p3vyrFiK0blB'
-```
-> Utilize as credenciais fornecidas pelo Neon para conectar ao banco de dados.
-
----
-
-## 🚀 Executando a aplicação
-
-Ative o ambiente virtual (se ainda não estiver ativo).
-
-Execute a aplicação:
-```sh
-python app/app.py
+DB_HOST=db_host_here
+DB_NAME=db_name_here
+DB_USER=db_user_here
+DB_PASSWORD=db_password_here
+API_KEY=your_api_key_here
 ```
 
-A API estará disponível em [http://localhost:5432](http://localhost:5432)
+## 🚀 Running the Project
 
----
+To run the project in development mode:
 
-## 📚 Documentação da API
+```bash
+gunicorn app.app:app
+```
 
-A documentação completa da API está disponível via Swagger UI em:  
-[http://localhost:5432/apidocs/](http://localhost:5432/apidocs/)
+The server will be available at `http://localhost:8000`
 
-### Endpoints principais
+## 📚 API Documentation
 
-- `GET /extractor?year={ano}`: Retorna dados brutos do web scraping realizado no site da Embrapa
-- `GET /download?year={ano}`: Retorna dados estruturados em formato CSV compactado (.zip)
+Interactive API documentation is available at:
+- Swagger UI: `http://localhost:8000/apidocs/`
 
----
+## 🔑 Endpoints
 
-## 🛠️ Tecnologias Utilizadas
+### GET /extractor
+Returns raw data obtained through web scraping.
 
-- Flask - Framework web
-- Beautiful Soup 4 - Web scraping
-- Flasgger - Documentação Swagger
-- PostgreSQL (Neon) - Banco de dados na nuvem
-- Flask-HTTPAuth - Autenticação
-- Pandas - Processamento de dados
-- Requests - Requisições HTTP
+**Parameters:**
+- `year` (optional): Year for data collection (default: current year)
 
----
+**Required Headers:**
+- `x-api-key`: Your API key
 
-## 👥 Contribuição
+### GET /download
+Returns processed data in compressed CSV format.
 
-Para contribuir com o projeto:
+**Parameters:**
+- `year` (optional): Year for data collection (default: current year)
 
-1. Faça um fork do repositório
-2. Crie uma branch para sua feature (`git checkout -b feature/NovaFeature`)
-3. Commit suas mudanças (`git commit -m 'Adiciona NovaFeature'`)
-4. Push para a branch (`git push origin feature/NovaFeature`)
-5. Abra um Pull Request
+**Required Headers:**
+- `x-api-key`: Your API key
 
----
+## 🔒 Security
 
-## 📄 Licença
+- API Key authentication
+- CORS configured for specific origins
+- Environment variables validation
 
-Este projeto está sob a licença [INSERIR TIPO DE LICENÇA] - veja o arquivo LICENSE.md para detalhes.
+## 🤝 Contributing
+
+1. Fork the project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## 📝 License
+
+This project is under the [MIT](LICENSE) license.
+
+## ✒️ Authors
+
+- **⁠Gustavo Imbelloni**
+  - [GitHub](https://github.com/gustavoimbelloni)
+  - [LinkedIn](https://www.linkedin.com/in/gustavoimbelloni/)
+
+- **⁠Patrick Meirelles**
+  - [GitHub](https://github.com/PatrickMeirelles)
+  - [LinkedIn](https://www.linkedin.com/in/patrick-meirelles/)
+
+- **Raíssa Campos dos Santos**
+  - [GitHub](https://github.com/raissacsantos)
+  - [LinkedIn](https://www.linkedin.com/in/ra%C3%ADssa-campos-dos-santos-51780625a/)
+
+- **Vitor Nogueira Domingos**
+  - [GitHub](https://github.com/vitornogueirad)
+  - [LinkedIn](https://www.linkedin.com/in/vitor-nogueira-domingos/)
+  
+- **Vitor Crispim**
+  - [GitHub](https://github.com/vtCrispim)
+  - [LinkedIn](https://www.linkedin.com/in/vitor-crispim-7b3481179/)
+
+## 📄 Notes
+
+- Data is available until 2023
+- API supports requests from specific origins (localhost:3000 and tech-challange-front.onrender.com) 
