@@ -2,7 +2,7 @@
 
 This API provides endpoints for extracting and processing grape commercialization data from http://vitibrasil.cnpuv.embrapa.br/index.php, using web scraping to collect up-to-date information.
 
-![Logo](https://raw.githubusercontent.com/Pos-ML-GPRVV/Grapi/ca645c5663cbee149e6b27059cf53cb0550746d3/app/static/Grapi-logo.png) 
+![Logo](https://raw.githubusercontent.com/Pos-ML-GPRVV/Grapi/master/app/static/Grapi-github.png) 
 
 ## 🚀 Features
 
