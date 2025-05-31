@@ -12,8 +12,7 @@ from app.utils.dict_to_csv import dict_to_csv, zip_files
 from pathlib import Path
 from flask_cors import CORS, cross_origin
 
-
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static')
 
 app.config["SWAGGER"] = {
     "specs": [{
@@ -72,12 +71,55 @@ def get_raw_data():
     responses:
         200:
             description: Data successfully retrieved
+            schema:
+                type: object
+                properties:
+                    code:
+                        type: number
+                        description: Status code of the operation
+                    data:
+                        type: object
+                        properties:
+                            data:
+                                type: object
+                                description: Raw data from web scraping
+                            year:
+                                type: string
+                                description: Year of the data
+                    message:
+                        type: string
+                        description: Operation status message
+                    success:
+                        type: boolean
+                        description: Indicates if the operation was successful
+                    timestamp:
+                        type: string
+                        format: date-time
+                        description: Timestamp of the operation
+        401:
+            description: Unauthorized access
+            schema:
+                type: object
+                properties:
+                    message:
+                        type: string
+                        description: Unauthorized message
     """
     year = request.args.get("year", default=2023)
     if int(year) > 2023:
         return jsonify({"error": "Data available until 2023"}), 400 
     data_web_scrapping = WebScrapping().get_content_page(year)
-    return jsonify({"year": year, "data": data_web_scrapping})
+    response = {
+        "code": 200,
+        "message": "Operation completed successfully",
+        "success": True,
+        "timestamp": datetime.now().isoformat(),
+        "data": {
+            "year": str(year),
+            "data": data_web_scrapping,
+        }
+    }
+    return jsonify(response)
 
 
 @app.route("/download")
@@ -100,21 +142,7 @@ def get_structured_data():
         description: Target year for data collection
     responses:
         200:
-            description: Data successfully retrieved
-            schema:
-                type: object
-                properties:
-                    success:
-                        type: boolean
-                        description: Indicates if the request was successful
-                    year:
-                        type: integer
-                        description: The year the data refers to
-                    data:
-                        type: array
-                        description: List of grape commercialization records
-                        items:
-                            type: object
+            description: Data successfully downloaded
         500:
             description: Internal server error
             schema:

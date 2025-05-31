@@ -2,9 +2,11 @@ SWAGGER_TEMPLATE = {
     "info": {
         "title": "Grapi",
         "description": """
+![Grapi Logo](/static/Grapi-logo.png)
+
 # About the API
 API developed to collect and provide data about grape and grape products commercialization in Brazil.
-The data is obtained through web scraping from Embrapa's VitiBrasil portal.
+The data is obtained through web scraping from [Embrapa's VitiBrasil portal](http://vitibrasil.cnpuv.embrapa.br/index.php).
 
 ## Team
 - **⁠Gustavo Imbelloni**
@@ -33,14 +35,11 @@ The data is obtained through web scraping from Embrapa's VitiBrasil portal.
 - Interactive documentation
 - Standardized JSON format
 
-## Repository
-For more information, visit our [GitHub Repository](https://github.com/Pos-ML-GPRVV/Grapi)
-""",
-        "version": "1.0.0",
-        "contact": {
-            "email": "your.email@example.com",
-            "url": "https://github.com/your-org/grapi"
-        }
+## Repositories
+For more information, visit our repositories: 
+- [API Repository](https://github.com/Pos-ML-GPRVV/Grapi)
+- [Website Repository](https://github.com/Pos-ML-GPRVV/Grapi-Website)
+"""
     },
     "components": {
         "schemas": {
