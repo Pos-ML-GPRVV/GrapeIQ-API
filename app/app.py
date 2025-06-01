@@ -159,6 +159,16 @@ def get_structured_data():
     path_resolve = Path(zip_path).resolve()
     return send_file(path_resolve, as_attachment=True)
 
+
+@app.route("/test")
+@cross_origin()
+@require_api_key
+def test():
+    return jsonify({"message": "Hello, World!"})
+
+
+
+
 if __name__ == "__main__":
     validate_env_variables()
     app.run(debug=True, host='0.0.0.0', port=5432)
