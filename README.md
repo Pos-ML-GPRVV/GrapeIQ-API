@@ -1,17 +1,24 @@
-# Grapi - Grape Data Extraction API 
 
-This API provides endpoints for extracting and processing grape commercialization data from http://vitibrasil.cnpuv.embrapa.br/index.php, using web scraping to collect up-to-date information.
+# Grapi - Grape Commercialization Data Extraction API
 
-![Logo](https://raw.githubusercontent.com/Pos-ML-GPRVV/Grapi/master/app/static/Grapi-github.png) 
+This RESTful API, built with Python and Flask, extracts, processes, and makes available grape commercialization data in Brazil. It uses automated web scraping from the **Embrapa** website and stores the data in a **PostgreSQL** database hosted on **Neon**.
+
+![Logo](https://raw.githubusercontent.com/Pos-ML-GPRVV/Grapi/master/app/static/Grapi-github.png)
+
+---
 
 ## 🚀 Features
 
-- Raw data extraction about grape commercialization
-- Data processing and structuring
-- Download data in compressed CSV format
-- Interactive documentation with Swagger
-- API Key authentication
+- Automated web scraping from Embrapa's grape commercialization site
+- Structured and processed data available via REST API
+- Interactive API documentation with Swagger (Flasgger)
+- API Key authentication (using Flask-HTTPAuth)
+- Data caching for performance optimization
+- Data persistence in PostgreSQL (Neon)
 - CORS support for frontend integration
+- Download of processed data in compressed CSV format
+
+---
 
 ## 🛠️ Technologies Used
 
@@ -19,29 +26,36 @@ This API provides endpoints for extracting and processing grape commercializatio
 - Flask
 - BeautifulSoup4
 - Pandas
+- Requests
+- PostgreSQL (Neon)
 - Flask-HTTPAuth
 - Flasgger (Swagger)
 - Flask-CORS
 - Gunicorn
 
+---
+
 ## 📋 Prerequisites
 
-- Python 3.x
+- Python 3.8+
 - pip (Python package manager)
-- Environment variables configured (see Configuration section)
+- Neon account (managed PostgreSQL in the cloud)
+
+---
 
 ## 🔧 Installation
 
 1. Clone the repository:
 ```bash
 git clone https://github.com/Pos-ML-GPRVV/Grapi
+cd Grapi
 ```
 
 2. Create and activate a virtual environment:
 ```bash
 python -m venv venv
 source venv/bin/activate  # Linux/Mac
-.\venv\Scripts\activate  # Windows
+.env\Scriptsctivate   # Windows
 ```
 
 3. Install dependencies:
@@ -49,94 +63,120 @@ source venv/bin/activate  # Linux/Mac
 pip install -r requirements.txt
 ```
 
-## ⚙️ Configuration
+4. Configure environment variables:
 
-Create a `.env` file in the project root with the following variables:
-
+Create a `.env` file in the project root or copy from `.env.example`:
 ```env
-DB_HOST=db_host_here
-DB_NAME=db_name_here
-DB_USER=db_user_here
-DB_PASSWORD=db_password_here
-API_KEY=your_api_key_here
+DB_HOST='your-neon-db-host'
+DB_NAME='your-db-name'
+DB_USER='your-db-user'
+DB_PASSWORD='your-db-password'
+API_KEY='your_api_key'
 ```
+
+> Use the credentials provided by Neon to connect to the database.
+
+---
 
 ## 🚀 Running the Project
 
-To run the project in development mode:
-
+Run the app using Gunicorn in development mode:
 ```bash
 gunicorn app.app:app
 ```
 
-The server will be available at `http://localhost:8000`
+Or with Flask directly (optional):
+```bash
+python app/app.py
+```
+
+The API will be available at:  
+`http://localhost:8000` (Gunicorn)  
+or  
+`http://localhost:5432` (Flask)
+
+---
 
 ## 📚 API Documentation
 
-Interactive API documentation is available at:
-- Swagger UI: `http://localhost:8000/apidocs/`
+The interactive documentation (Swagger UI) is available at:
+- `http://localhost:8000/apidocs/` (Gunicorn)
+- `http://localhost:5432/apidocs/` (Flask)
 
-## 🔑 Endpoints
+---
+
+## 🔑 Main Endpoints
 
 ### GET /extractor
 Returns raw data obtained through web scraping.
 
-**Parameters:**
-- `year` (optional): Year for data collection (default: current year)
+**Query Parameters:**
+- `year` (optional): Year to collect data (default: current year)
 
 **Required Headers:**
 - `x-api-key`: Your API key
 
 ### GET /download
-Returns processed data in compressed CSV format.
+Returns processed and structured data in a compressed CSV file (.zip).
 
-**Parameters:**
-- `year` (optional): Year for data collection (default: current year)
+**Query Parameters:**
+- `year` (optional): Year to collect data (default: current year)
 
 **Required Headers:**
 - `x-api-key`: Your API key
 
+---
+
 ## 🔒 Security
 
 - API Key authentication
-- CORS configured for specific origins
-- Environment variables validation
+- CORS configuration for allowed origins
+- Environment variable validation
+
+---
+
+## 🧱 Architecture Diagram
+
+![image](https://github.com/user-attachments/assets/00e70a17-87e1-4580-a1de-a643adf87ee2)
+
+---
 
 ## 🤝 Contributing
 
 1. Fork the project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
 3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
+
+---
 
 ## 📝 License
 
-This project is under the [MIT](LICENSE) license.
+This project is licensed under the [MIT License](LICENSE)
+
+---
 
 ## ✒️ Authors
 
-- **⁠Gustavo Imbelloni**
-  - [GitHub](https://github.com/gustavoimbelloni)
-  - [LinkedIn](https://www.linkedin.com/in/gustavoimbelloni/)
+- **Gustavo Imbelloni**  
+  [GitHub](https://github.com/gustavoimbelloni) · [LinkedIn](https://www.linkedin.com/in/gustavoimbelloni/)
 
-- **⁠Patrick Meirelles**
-  - [GitHub](https://github.com/PatrickMeirelles)
-  - [LinkedIn](https://www.linkedin.com/in/patrick-meirelles/)
+- **Patrick Meirelles**  
+  [GitHub](https://github.com/PatrickMeirelles) · [LinkedIn](https://www.linkedin.com/in/patrick-meirelles/)
 
-- **Raíssa Campos dos Santos**
-  - [GitHub](https://github.com/raissacsantos)
-  - [LinkedIn](https://www.linkedin.com/in/ra%C3%ADssa-campos-dos-santos-51780625a/)
+- **Raíssa Campos dos Santos**  
+  [GitHub](https://github.com/raissacsantos) · [LinkedIn](https://www.linkedin.com/in/ra%C3%ADssa-campos-dos-santos-51780625a/)
 
-- **Vitor Nogueira Domingos**
-  - [GitHub](https://github.com/vitornogueirad)
-  - [LinkedIn](https://www.linkedin.com/in/vitor-nogueira-domingos/)
-  
-- **Vitor Crispim**
-  - [GitHub](https://github.com/vtCrispim)
-  - [LinkedIn](https://www.linkedin.com/in/vitor-crispim-7b3481179/)
+- **Vitor Nogueira Domingos**  
+  [GitHub](https://github.com/vitornogueirad) · [LinkedIn](https://www.linkedin.com/in/vitor-nogueira-domingos/)
+
+- **Vitor Crispim**  
+  [GitHub](https://github.com/vtCrispim) · [LinkedIn](https://www.linkedin.com/in/vitor-crispim-7b3481179/)
+
+---
 
 ## 📄 Notes
 
 - Data is available until 2023
-- API supports requests from specific origins (localhost:3000 and tech-challange-front.onrender.com) 
+- API allows requests only from authorized origins (e.g., `localhost:3000`, `tech-challange-front.onrender.com`)
