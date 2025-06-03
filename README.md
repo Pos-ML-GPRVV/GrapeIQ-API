@@ -82,7 +82,7 @@ Interactive API documentation is available at:
 Returns raw data obtained through web scraping.
 
 **Parameters:**
-- `year` (optional): Year for data collection (default: current year)
+- `year` (optional): Year for data collection (default: 2023, maximum year of site data)
 
 **Required Headers:**
 - `x-api-key`: Your API key
